@@ -59,7 +59,7 @@ function Header() {
               <StyledLink to={`products`}>상품들</StyledLink>
             </Item>
             <Item>
-              <StyledLink to={`login`}>로그인</StyledLink>
+              <StyledLink to={`signup`}>회원 가입</StyledLink>
             </Item>
             <Item>
               <StyledLink to={`user`}>유저</StyledLink>

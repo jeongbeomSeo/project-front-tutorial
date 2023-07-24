@@ -1,6 +1,8 @@
-import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { styled } from "styled-components";
+import { IForm as IFormUser } from "../types/user";
+import { fetchSignUp } from "../services/user";
+import { useNavigate } from "react-router";
 
 const Container = styled.div`
   width: 100vw;
@@ -52,35 +54,53 @@ const Btn = styled.button`
   border: 1px solid rgba(255, 126, 54, 1);
 `;
 
-// 나중에 Interface 많아지면 빼야되는 것도 고려
-interface IForm {
-  email: string;
-  name: string;
-  username: string;
-  password: string;
-  password1: string;
-}
-
-function Login() {
+function SignUp() {
+  //  const [user, setUser] = useState<IUser>();
+  const navigate = useNavigate();
   const {
     register,
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm<IForm>();
+  } = useForm<IFormUser>();
   const password = watch("password");
 
-  const onSubmit = (data: IForm) => {
-    fetch("/user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error("Error: ", error));
+  /*
+  setState는 비동기적으로 작동하며, 즉시 업데이트되지 않습니다. 
+  이것은 종종 초기 개발자들이 혼란스럽게 느끼는 부분입니다. state를 설정하고 그 값을 즉시 읽으려고 하면, 
+  업데이트가 즉시 반영되지 않기 때문에 예상한 값을 얻지 못할 수 있습니다.
+  즉, setUser는 바로 반환해서 await를 설정해도 의미 없고, 업데이트만 비동기적으로 작동하기 때문에 해당 방식 자체가 이용하기 힘듬.
+  const makeUser = async (data: IFormUser) => {
+    const { password1, ...newData } = data;
+    setUser(newData);
+  };
+  */
+
+  // async 와 await를 사용함으로써 아래에서 가져온 데이터를 사용해서 로직을 구현할 수 있음(비동기 요청의 특징)
+  // 사용했을 때와 사용하지 않았을 때의 반환 내용도 다르다.
+  const onSubmit = async (data: IFormUser) => {
+    // 임시 예외 처리
+    if (data.password != data.password1) {
+      throw new Error("Not Validation Password");
+    }
+
+    const { password1, ...user } = data;
+
+    //makeUser(data);
+
+    if (user) {
+      // Status Code
+      const sc = await fetchSignUp(user);
+
+      console.log(sc);
+      if (sc.status === 200 || sc.status === 201) {
+        navigate("/");
+      } else {
+        throw new Error("not success signup");
+      }
+    } else {
+      throw new Error("Not Validation User Data");
+    }
   };
   return (
     <Container>
@@ -161,4 +181,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignUp;
