@@ -4,7 +4,7 @@ import Products from "./containers/products";
 import SignUp from "./containers/signup";
 import User from "./containers/user";
 import Layout from "./layout";
-import NotFound from "./containers/notFound";
+import NotFound from "./exception/notFound";
 import { loader as userLoader } from "./routes/router";
 
 const router = createBrowserRouter([
@@ -16,6 +16,8 @@ const router = createBrowserRouter([
         path: "",
         element: <Home />,
         loader: userLoader,
+        // Loader를 사용할 경우 모종의 이유로 서버로부터 데이터를 가져오지 "못하면" 오류가 발생하는데, 이떄 errorElement가 실행되고 있는 상황 발생
+        errorElement: <div>Not Active Loader</div>,
       },
       {
         path: "products",

@@ -9,7 +9,7 @@ export function fetchSignUp(data: IUser) {
         },
         body: JSON.stringify(data),
       }
-        //).then((response) => response.json()
+      ).then((response) => response.json()
     );
 }
 

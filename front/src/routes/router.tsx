@@ -10,7 +10,7 @@ GET요청을 하면 Loader가 호출된다
 
 import { fetchAllUser } from "../services/user";
 
-export async function loader() {
-  const users = await fetchAllUser();
+export function loader() {
+  const users = fetchAllUser();
   return users;
 }

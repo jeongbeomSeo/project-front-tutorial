@@ -1,6 +1,8 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.UserDTO;
+import com.example.backend.entity.User;
+import com.example.backend.exception.DuplicatedUserException;
 import com.example.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,26 +27,24 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) { this.userService = userService; }
 
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public ResponseEntity<Void> user(@RequestBody UserDTO user) {
-        /*
-        System.out.println("User Email: " + user.getEmail());
-        System.out.println("User Name:" + user.getName());
-        System.out.println("User UserName: " + user.getUsername());
-        System.out.println("User Password: " + user.getPassword());
-        System.out.println("User Password1: " + user.getPassword1());
-        */
+        @RequestMapping(value = "/user", method = RequestMethod.POST)
+        public ResponseEntity<User> user(@RequestBody UserDTO user) {
+            User savedUser = userService.add(user);
 
-        // 회원 가입 로직 필요
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ResponseEntity<List<UserDTO>> allUser() {
+    public ResponseEntity<List<User>> allUser() {
 
+        /*
         List<UserDTO> userDTOList = userService.createUser();
 
         return new ResponseEntity<>(userDTOList, HttpStatus.OK);
+         */
+
+        List<User> allUser = userService.findAll();
+        return new ResponseEntity<>(allUser, HttpStatus.OK);
     }
+
 }

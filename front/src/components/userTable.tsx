@@ -1,21 +1,22 @@
 import { IUser } from "../types/user";
 
-function UserTable(users: IUser) {
+function UserTable(users: IUser[]) {
+  //console.log(users);
   return (
     <table>
       <thead>
         <th>Email</th>
         <th>Name</th>
-        <th>UserName</th>
         <th>Password</th>
+        <th>isManager</th>
       </thead>
       <tbody>
         {users.map((user, index) => (
           <tr key={index}>
             <td>{user.email}</td>
             <td>{user.name}</td>
-            <td>{user.username}</td>
             <td>{user.password}</td>
+            <td>{user.isManager}</td>
           </tr>
         ))}
       </tbody>

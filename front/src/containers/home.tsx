@@ -1,6 +1,6 @@
 import { useLoaderData } from "react-router";
 import { styled } from "styled-components";
-import { IUser } from "../types/user";
+import { IUser, IUsers } from "../types/user";
 import UserTable from "../components/userTable";
 
 const Container = styled.div`
@@ -20,10 +20,30 @@ const Box = styled.div`
 
 function Home() {
   const users = useLoaderData() as IUser[];
-
   return (
     <Container>
-      <Box>{users && <UserTable users={users} />}</Box>
+      <Box>
+        <table>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Name</th>
+              <th>Password</th>
+              <th>isManager</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users?.map((user, index) => (
+              <tr key={index}>
+                <td>{user.email}</td>
+                <td>{user.name}</td>
+                <td>{user.password}</td>
+                <td>{user.isManager}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Box>
     </Container>
   );
 }

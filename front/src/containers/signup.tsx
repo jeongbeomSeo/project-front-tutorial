@@ -95,8 +95,8 @@ function SignUp() {
       console.log(sc);
       if (sc.status === 200 || sc.status === 201) {
         navigate("/");
-      } else {
-        throw new Error("not success signup");
+      } else if (sc.status === 400) {
+        throw new Error("Duplicate User");
       }
     } else {
       throw new Error("Not Validation User Data");
@@ -131,18 +131,6 @@ function SignUp() {
           />
           <span>{errors?.name?.message}</span>
           <Input
-            {...register("username", {
-              required: {
-                value: true,
-                message: "Username is Required",
-              },
-            })}
-            type="text"
-            placeholder="UserName"
-            // ID Check Btn => Ajax 통신을 통해서 중복 여부 확인
-          />
-          <span>{errors?.username?.message}</span>
-          <Input
             {...register("password", {
               required: {
                 value: true,
@@ -174,6 +162,31 @@ function SignUp() {
             placeholder="Password Confirmation"
           />
           <span>{errors?.password1?.message}</span>
+          <div>
+            <Input
+              {...register("isManager", {
+                required: {
+                  value: true,
+                  message: "isManager is Required",
+                },
+              })}
+              type="radio"
+              name="isManager"
+            />
+            주최자
+            <Input
+              {...register("isManager", {
+                required: {
+                  value: true,
+                  message: "isManager is Required",
+                },
+              })}
+              type="radio"
+              name="isManager"
+            />
+            참여자
+          </div>
+
           <Btn>회원 가입</Btn>
         </Form>
       </LoginBox>

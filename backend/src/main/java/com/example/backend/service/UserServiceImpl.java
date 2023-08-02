@@ -1,30 +1,58 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.UserDTO;
+import com.example.backend.entity.User;
+import com.example.backend.exception.DuplicatedUserException;
+import com.example.backend.exception.ErrorCode;
+import com.example.backend.exception.UserNotFoundException;
+import com.example.backend.repository.UserJPARepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService{
 
+    UserJPARepository userJPARepository;
+
+    @Autowired
+    public UserServiceImpl(UserJPARepository userJPARepository) {
+        this.userJPARepository = userJPARepository;
+    }
+
     @Override
-    public List<UserDTO> createUser() {
+    public User findById(Integer userId) {
+        return userJPARepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND, "Not Found User Error"));
+    }
 
-        UserDTO user1 = new UserDTO("user1@email", "user1", "user1", "password1");
-        UserDTO user2 = new UserDTO("user2@email", "user2", "user2", "password2");
-        UserDTO user3 = new UserDTO("user3@email", "user3", "user3", "password3");
-        UserDTO user4 = new UserDTO("user4@email", "user4", "user4", "password4");
-        UserDTO user5 = new UserDTO("user5@email", "user5", "user5", "password5");
+    @Override
+    public User findByEmail(String email) {
+        return userJPARepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND, "Not Found User Error"));
+    }
 
-        List<UserDTO> userDTOList = new ArrayList<>();
-        userDTOList.add(user1);
-        userDTOList.add(user2);
-        userDTOList.add(user3);
-        userDTOList.add(user4);
-        userDTOList.add(user5);
+    @Override
+    @Transactional
+    public User add(UserDTO userDTO) {
 
-        return userDTOList;
+        User user = userDTO.toEntity(userDTO);
+        if(userJPARepository.existsByEmail(user.getEmail())) {
+            throw new DuplicatedUserException(ErrorCode.DUPLICATE_LOGIN_ID, "duplicated User Email Error");
+        }
+
+        return userJPARepository.save(user);
+    }
+
+    @Override
+    public void deleteById(Integer userId) {
+
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userJPARepository.findAll();
     }
 }
