@@ -6,6 +6,7 @@ import User from "./containers/user";
 import Layout from "./layout";
 import NotFound from "./exception/notFound";
 import { loader as userLoader } from "./routes/router";
+import Login from "./containers/login";
 
 const router = createBrowserRouter([
   {
@@ -27,12 +28,16 @@ const router = createBrowserRouter([
         path: "signup",
         element: <SignUp />,
       },
-      {
-        path: "user",
-        element: <User />,
-      },
     ],
     errorElement: <NotFound />,
+  },
+  {
+    path: "/user",
+    element: <User />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 

@@ -1,5 +1,12 @@
+import { Link, Outlet } from "react-router-dom";
+
 function User() {
-  return <div>User</div>;
+  return (
+    <>
+      <Link to={`/login`}>Go Login Page</Link>
+      <Outlet />
+    </>
+  );
 }
 
 export default User;

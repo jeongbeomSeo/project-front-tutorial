@@ -21,7 +21,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleDuplicatedUserException(DuplicatedUserException e) {
         ErrorCode errorCode = e.getErrorCode();
         log.error("handleDuplicatedUserException throw Exception: {}", errorCode.getCode());
-        return ResponseEntity.status(errorCode.getStatus()).body(makeErrorResponse(errorCode));
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(makeErrorResponse(errorCode));
     }
 
     @ExceptionHandler(UserNotFoundException.class)
