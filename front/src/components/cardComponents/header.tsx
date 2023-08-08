@@ -1,7 +1,6 @@
 import { styled } from "styled-components";
 
 const Title = styled.div`
-  margin-top: 100px;
   display: flex;
   justify-content: center;
   align-items: center;

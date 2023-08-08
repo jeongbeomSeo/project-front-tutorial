@@ -5,6 +5,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 25px;
 `;
 
 const Top = styled.div`
@@ -13,8 +14,8 @@ const Top = styled.div`
 
 const Bottom = styled.div`
   border: 2px solid rgba(45, 54, 72, 1);
+  width: 100%;
   border-radius: 5px;
-  width: 65%;
   text-align: center;
   padding: 13px 0;
   font-size: 18px;

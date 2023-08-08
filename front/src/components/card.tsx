@@ -8,8 +8,7 @@ const Container = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 27vw;
-  height: 80vh;
+  width: 500px;
 `;
 const Logo = styled.div`
   color: white;
@@ -26,12 +25,13 @@ const Box = styled.div`
   margin-top: 20px;
   border: 2px solid var(--gray);
   border-radius: 5px;
-  height: 65vh;
+`;
+
+const InnerBox = styled.div`
+  padding: 90px;
 `;
 
 const Main = styled.div`
-  height: 40%;
-  width: 65%;
   position: relative;
   display: flex;
   margin: 0 auto;
@@ -43,9 +43,11 @@ function Card({ children }: CardProps) {
     <Container>
       <Logo>로고</Logo>
       <Box>
-        <Header />
-        <Main>{children}</Main>
-        <Footer />
+        <InnerBox>
+          <Header />
+          <Main>{children}</Main>
+          <Footer />
+        </InnerBox>
       </Box>
     </Container>
   );

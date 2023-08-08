@@ -1,5 +1,9 @@
 import { styled } from "styled-components";
 import Card from "../components/card";
+import { useForm } from "react-hook-form";
+import { ILogin } from "../types/login";
+import { useSetRecoilState } from "recoil";
+import { userState } from "../states/atoms/userAtom";
 
 const Form = styled.form`
   display: flex;
@@ -27,7 +31,7 @@ const Btn = styled.button`
   border: none;
   border-radius: 5px;
   padding: 10px 0;
-  margin: 10px 0;
+  margin: 20px 0;
   cursor: pointer;
 `;
 
@@ -45,11 +49,36 @@ const Footer = styled.div`
 `;
 
 function Login() {
+  const emailRegEx =
+    /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
+  const setUser = useSetRecoilState(userState);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ILogin>();
+  const onValid = (data: ILogin) => {};
   return (
     <Card>
-      <Form action="">
-        <Input type="text" placeholder="이메일" />
-        <Input type="text" placeholder="비밀번호" />
+      <Form onSubmit={handleSubmit(onValid)}>
+        <Input
+          {...register("email", {
+            required: "Email is Required",
+            pattern: {
+              value: emailRegEx,
+              message: "It is not an email format.",
+            },
+          })}
+          placeholder="이메일"
+        />
+        <span>{errors?.email?.message}</span>
+        <Input
+          {...register("password", {
+            required: "Please enter your password.",
+          })}
+          placeholder="비밀번호"
+        />
+        <span>{errors?.password?.message}</span>
         <Btn>로그인</Btn>
       </Form>
       <Footer>
